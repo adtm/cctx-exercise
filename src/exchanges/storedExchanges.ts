@@ -10,24 +10,24 @@ class Exchanges {
     this.storedExchanges = {};
   }
 
-  getExchange = async (id: string) => {
+  getExchange = async (id: string, creds = {}) => {
     const foundExchange = this.storedExchanges[id];
 
     console.log(this.storedExchanges);
     console.log(foundExchange);
 
     if (!foundExchange) {
-      const addedExchange = await this.addExchange(id);
+      const addedExchange = await this.addExchange(id, creds);
       return addedExchange;
     }
     return foundExchange;
   };
 
-  addExchange = async (id: string) => {
+  addExchange = async (id: string, creds = {}) => {
     const isSupported = ccxt.exchanges.indexOf(id) > -1;
 
     if (isSupported) {
-      const exchange = new ccxt[id]({ enableRateLimit: true });
+      const exchange = new ccxt[id]({ enableRateLimit: true, ...creds });
       this.storedExchanges[id] = exchange;
       await exchange.loadMarkets();
       return exchange;
@@ -51,7 +51,7 @@ class Exchanges {
   };
 
   addDefaultExchanges = () => {
-    const defaultExchanges = ["kraken", "bittrex"];
+    const defaultExchanges = ["kraken"];
     for (let i = 0; i < defaultExchanges.length; ++i)
       this.addExchange(defaultExchanges[i]);
   };

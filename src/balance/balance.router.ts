@@ -4,10 +4,11 @@ import getBalance from "./balance.service";
 const router = new Router();
 
 router.get("/balance", async ctx => {
-  const { id, apiKey, secret } = ctx.query;
+  const { id, apiKey, secret, ...params } = ctx.query;
   ctx.body = await getBalance(id, {
     apiKey,
-    secret
+    secret,
+    ...params
   });
 });
 

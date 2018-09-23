@@ -1,15 +1,10 @@
 import Exchanges from "../exchanges/storedExchanges";
 
-// TODO: there are other params to instiate an exchange - handle this
-const getBalance = async (id, { apiKey, secret }) => {
-  const exchange: any = await Exchanges.getExchange(id);
+const getBalance = async (id, creds) => {
+  const exchange: any = await Exchanges.getExchange(id, creds);
 
   try {
-    const instiatedExchange = exchange[id]({
-      apiKey,
-      secret
-    });
-    const exchangeBalance = await instiatedExchange.fetchBalance();
+    const exchangeBalance = await exchange.fetchBalance();
     return exchangeBalance;
   } catch (err) {
     console.log(err);

@@ -1,18 +1,15 @@
 import * as Koa from "koa";
-import * as Router from "koa-router";
-
-import tickerRouter from "./ticker/ticker.router";
-import symbolRouter from "./symbol/symbol.router";
+import logger from "koa-logger";
+import router from "./router";
 
 import { updateExchanges } from "./exchanges/loadMarkets";
+
 updateExchanges();
 
 const app = new Koa();
-const router = new Router();
 
-router.use(tickerRouter.routes());
-router.use(symbolRouter.routes());
-
-app.use(router.routes()).use(router.allowedMethods());
+app.use(logger());
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 export default app;

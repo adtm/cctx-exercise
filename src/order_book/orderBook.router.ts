@@ -1,11 +1,11 @@
 import * as Router from "koa-router";
-import getTicker from "./ticker.service";
+import getOrderBook from "./orderBook.service";
 
 const router = new Router();
 
-router.get("/ticker", async ctx => {
+router.get("/orderbook", async ctx => {
   const { id, symbol } = ctx.query;
-  ctx.body = await getTicker(id, symbol);
+  ctx.body = await getOrderBook(id, symbol);
 });
 
 export default router;

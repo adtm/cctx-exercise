@@ -24,6 +24,7 @@
   "devDependencies": {
     "dotenv": "^6.0.0",
     "husky": "^1.0.0-rc.15",
+    "koa-logger": "^3.2.0",
     "lint-staged": "^7.3.0",
     "nodemon": "^1.18.4",
     "npm-run-all": "^4.1.3",

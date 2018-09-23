@@ -1,8 +1,8 @@
-import { getExchange } from "../exchanges/loadMarkets";
+import Exchanges from "../exchanges/storedExchanges";
 
 // TODO: there are other params to instiate an exchange - handle this
 const getBalance = async (id, { apiKey, secret }) => {
-  const exchange: any = await getExchange(id);
+  const exchange: any = await Exchanges.getExchange(id);
 
   try {
     const instiatedExchange = exchange[id]({

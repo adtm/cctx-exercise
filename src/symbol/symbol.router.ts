@@ -4,8 +4,8 @@ import getSymbols from "./symbol.service";
 const router = new Router();
 
 router.get("/symbol", async ctx => {
-  const { symbol } = ctx.query;
-  ctx.body = await getSymbols(symbol);
+  const { id } = ctx.query;
+  ctx.body = await getSymbols(id);
 });
 
 export default router;

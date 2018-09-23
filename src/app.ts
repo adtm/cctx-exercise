@@ -1,10 +1,10 @@
 import * as Koa from "koa";
-import logger from "koa-logger";
+import * as logger from "koa-logger";
 import router from "./router";
 
-import { updateExchanges } from "./exchanges/loadMarkets";
-
-updateExchanges();
+import Exchanges from "./exchanges/storedExchanges";
+Exchanges.addDefaultExchanges();
+Exchanges.updateExchanges();
 
 const app = new Koa();
 

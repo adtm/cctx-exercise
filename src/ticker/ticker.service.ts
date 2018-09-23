@@ -1,7 +1,8 @@
-import { getExchange } from "../exchanges/loadMarkets";
+import Exchanges from "../exchanges/storedExchanges";
 
+// TODO: check about speed issues
 const getTicker = async (id, symbol) => {
-  const exchange: any = await getExchange(id);
+  const exchange: any = await Exchanges.getExchange(id);
 
   try {
     const ticker = await exchange.fetchTicker(symbol);

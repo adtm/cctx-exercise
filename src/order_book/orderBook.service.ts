@@ -1,7 +1,7 @@
-import { getExchange } from "../exchanges/loadMarkets";
+import Exchanges from "../exchanges/storedExchanges";
 
 const getOrderBook = async (id, symbol) => {
-  const exchange: any = await getExchange(id);
+  const exchange: any = await Exchanges.getExchange(id);
 
   try {
     const orderBook = await exchange.fetchOrderBook(symbol);

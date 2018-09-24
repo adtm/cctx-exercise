@@ -3,13 +3,21 @@ import * as logger from "koa-logger";
 import router from "./router";
 
 import Exchanges from "./exchanges/storedExchanges";
-Exchanges.addDefaultExchanges();
-Exchanges.updateExchanges();
 
 const app = new Koa();
 
-app.use(logger());
-app.use(router.routes());
-app.use(router.allowedMethods());
+(async () => {
+  const status = await Exchanges.initialExchangeLoad();
+  Exchanges.updateExchanges();
 
+  if (status) {
+    console.log("Karolis stahp");
+    app.use(logger());
+    app.use(router.routes());
+    app.use(router.allowedMethods());
+  } else {
+    console.log("yolo");
+    return 0;
+  }
+})();
 export default app;

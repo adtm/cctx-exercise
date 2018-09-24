@@ -1,20 +1,28 @@
 "use strict";
-const ccxt = require("ccxt");
+import * as fs from "fs";
+import * as path from "path";
+
+import * as ccxt from "ccxt";
+
+import exchangesWithCredentials from "./exchangesWithCredentials";
+
+import { getFormattedDate } from "../utils/date";
+
+const stream = fs.createWriteStream(
+  `${path.join(__dirname, "..", "..")}/src/logs/${getFormattedDate()}.txt`,
+);
 
 const SECOND = 1000;
 
 class Exchanges {
-  storedExchanges: Object;
+  protected storedExchanges: any;
 
   constructor() {
     this.storedExchanges = {};
   }
 
-  getExchange = async (id: string, creds = {}) => {
+  public getExchange = async (id: string, creds = {}) => {
     const foundExchange = this.storedExchanges[id];
-
-    console.log(this.storedExchanges);
-    console.log(foundExchange);
 
     if (!foundExchange) {
       const addedExchange = await this.addExchange(id, creds);
@@ -23,7 +31,7 @@ class Exchanges {
     return foundExchange;
   };
 
-  addExchange = async (id: string, creds = {}) => {
+  public addExchange = async (id: string, creds = {}) => {
     const isSupported = ccxt.exchanges.indexOf(id) > -1;
 
     if (isSupported) {
@@ -32,12 +40,12 @@ class Exchanges {
       await exchange.loadMarkets();
       return exchange;
     } else {
-      console.log("Exchange is not supported");
+      // console.log("Exchange is not supported");
       return null;
     }
   };
 
-  updateExchanges = () => {
+  public updateExchanges = () => {
     setInterval(() => {
       Object.keys(this.storedExchanges).forEach(id => {
         try {
@@ -50,13 +58,31 @@ class Exchanges {
     }, SECOND);
   };
 
-  addDefaultExchanges = () => {
-    const defaultExchanges = ["kraken"];
-    for (let i = 0; i < defaultExchanges.length; ++i)
-      this.addExchange(defaultExchanges[i]);
+  public initialExchangeLoad = async () => {
+    try {
+      await this.loadDefaultExchanges();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  private loadDefaultExchanges = async () => {
+    await Promise.all(
+      ccxt.exchanges.map(async (id: string) => {
+        const storedCredentials: object = exchangesWithCredentials[id] || {};
+        const exchange: ccxt.Exchange = new ccxt[id](storedCredentials);
+
+        try {
+          await exchange.loadMarkets();
+          this.storedExchanges[id] = exchange;
+        } catch (err) {
+          stream.write(`${getFormattedDate()} - ${id} - ${err} \n`);
+        }
+      }),
+    );
   };
 }
 
 const ExchangeInstance = new Exchanges();
-
 export default ExchangeInstance;

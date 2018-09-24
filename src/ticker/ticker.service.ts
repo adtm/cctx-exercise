@@ -1,15 +1,14 @@
+import * as ccxt from "ccxt";
 import Exchanges from "../exchanges/storedExchanges";
 
-// TODO: check about speed issues
 const getTicker = async (id, symbol) => {
-  const exchange: any = await Exchanges.getExchange(id);
-
   try {
-    const ticker = await exchange.fetchTicker(symbol);
+    const exchange: ccxt.Exchange = await Exchanges.getExchange(id);
+    const ticker: ccxt.Ticker = await exchange.fetchTicker(symbol);
     return ticker;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
-export default getTicker;
+export { getTicker };

@@ -1,11 +1,16 @@
 import * as Router from "koa-router";
-import getSymbols from "./symbol.service";
+
+import validate from "../middleware/request-validator";
+import symbolValidation from "./symbol.validation";
+
+import * as symbolController from "./symbol.controller";
 
 const router = new Router();
 
-router.get("/symbol", async ctx => {
-  const { id } = ctx.query;
-  ctx.body = await getSymbols(id);
-});
+router.get(
+  "/symbol",
+  validate(symbolValidation.getSymbol),
+  symbolController.getTicker,
+);
 
 export default router;

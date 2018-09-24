@@ -1,16 +1,15 @@
-const ccxt = require("ccxt");
+import * as ccxt from "ccxt";
 
 import Exchanges from "../exchanges/storedExchanges";
 
 const getSymbols = async id => {
   try {
-    const exchange: any = await Exchanges.getExchange(id);
-
-    const symbols = exchange.symbols;
+    const exchange: ccxt.Exchange = await Exchanges.getExchange(id);
+    const symbols: string[] = exchange.symbols;
     return symbols;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
-export default getSymbols;
+export { getSymbols };

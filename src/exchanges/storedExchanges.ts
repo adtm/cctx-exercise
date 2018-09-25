@@ -1,16 +1,8 @@
 "use strict";
-import * as fs from "fs";
-import * as path from "path";
-
 import * as ccxt from "ccxt";
 
+import logger from "../middleware/logger";
 import exchangesWithCredentials from "./exchangesWithCredentials";
-
-import { getFormattedDate } from "../utils/date";
-
-const stream = fs.createWriteStream(
-  `${path.join(__dirname, "..", "..")}/src/logs/${getFormattedDate()}.txt`,
-);
 
 const SECOND = 1000;
 
@@ -25,6 +17,7 @@ class Exchanges {
     const foundExchange = this.storedExchanges[id];
 
     if (!foundExchange) {
+      logger.info(`${id}: fetching market`);
       const addedExchange = await this.addExchange(id, creds);
       return addedExchange;
     }
@@ -35,13 +28,16 @@ class Exchanges {
     const isSupported = ccxt.exchanges.indexOf(id) > -1;
 
     if (isSupported) {
-      const exchange = new ccxt[id]({ enableRateLimit: true, ...creds });
-      this.storedExchanges[id] = exchange;
-      await exchange.loadMarkets();
-      return exchange;
+      try {
+        const exchange = new ccxt[id]({ enableRateLimit: true, ...creds });
+        this.storedExchanges[id] = exchange;
+        await exchange.loadMarkets();
+        return exchange;
+      } catch (err) {
+        logger.error(`${id}: - ${err.message}`);
+      }
     } else {
-      // console.log("Exchange is not supported");
-      return null;
+      logger.info(`${id}: is not supported`);
     }
   };
 
@@ -52,7 +48,7 @@ class Exchanges {
           this.storedExchanges[id].loadMarkets();
           console.log(id, new Date());
         } catch (err) {
-          console.error(`${err}, while loading market`);
+          logger.error(`${id}: - ${err.message}`);
         }
       });
     }, SECOND);
@@ -77,7 +73,7 @@ class Exchanges {
           await exchange.loadMarkets();
           this.storedExchanges[id] = exchange;
         } catch (err) {
-          stream.write(`${getFormattedDate()} - ${id} - ${err} \n`);
+          logger.error(`${id} - ${err.message}`);
         }
       }),
     );

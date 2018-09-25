@@ -1,3 +1,4 @@
+"use strict";
 import * as Router from "koa-router";
 
 import validate from "../middleware/request-validator";

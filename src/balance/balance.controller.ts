@@ -1,3 +1,4 @@
+"use strict";
 import { Context } from "koa";
 
 import * as balanceService from "./balance.service";

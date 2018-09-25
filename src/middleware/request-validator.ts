@@ -10,9 +10,6 @@ const validateObject = (object = {}, label, schema, options = {}) => {
 };
 
 const validate = validationObj => (ctx, next) => {
-  console.log(validationObj);
-  console.log(ctx);
-
   try {
     validateObject(ctx.headers, "Headers", validationObj.headers, {
       allowUnknown: true,

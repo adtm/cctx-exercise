@@ -1,13 +1,17 @@
+"use strict";
 import * as ccxt from "ccxt";
+
 import Exchanges from "../exchanges/storedExchanges";
+import appError from "../helpers/appError";
 
 const getBalance = async (id: string, creds) => {
+  const exchange: ccxt.Exchange = await Exchanges.getExchange(id, creds);
+
   try {
-    const exchange: ccxt.Exchange = await Exchanges.getExchange(id, creds);
     const exchangeBalance: ccxt.Balances = await exchange.fetchBalance();
     return exchangeBalance;
   } catch (err) {
-    // console.log(err);
+    throw new appError(404, `${id}: - ${err.message}`);
   }
 };
 

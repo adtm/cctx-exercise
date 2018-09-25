@@ -1,7 +1,8 @@
 "use strict";
 import * as ccxt from "ccxt";
 
-import logger from "../middleware/logger";
+import appError from "../helpers/appError";
+import logger from "../helpers/logger";
 import exchangesWithCredentials from "./exchangesWithCredentials";
 
 const SECOND = 1000;
@@ -34,10 +35,10 @@ class Exchanges {
         await exchange.loadMarkets();
         return exchange;
       } catch (err) {
-        logger.error(`${id}: - ${err.message}`);
+        throw new appError(404, `${id}: - ${err.message}`);
       }
     } else {
-      logger.info(`${id}: is not supported`);
+      throw new appError(404, `${id}: is not supported`);
     }
   };
 

@@ -6,7 +6,7 @@ const customFormat = format.printf(info => {
   return `[${info.level}] - ${info.timestamp}: ${info.message}`;
 });
 
-const filterOnly = level => {
+const filterOnly = (level: string) => {
   return format(info => {
     if (info[LEVEL] === level) {
       return info;

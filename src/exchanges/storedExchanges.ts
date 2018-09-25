@@ -47,7 +47,6 @@ class Exchanges {
       Object.keys(this.storedExchanges).forEach(id => {
         try {
           this.storedExchanges[id].loadMarkets();
-          console.log(id, new Date());
         } catch (err) {
           logger.error(`${id}: - ${err.message}`);
         }

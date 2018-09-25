@@ -3,7 +3,10 @@ import * as ccxt from "ccxt";
 import Exchanges from "../exchanges/storedExchanges";
 import appError from "../helpers/appError";
 
-const getOrderBook = async (id: string, symbol: string) => {
+const getOrderBook = async (
+  id: string,
+  symbol: string,
+): Promise<ccxt.OrderBook> => {
   const exchange: ccxt.Exchange = await Exchanges.getExchange(id);
 
   try {

@@ -1,4 +1,5 @@
-require("dotenv").config();
+import * as dotenv from "dotenv";
+dotenv.config();
 
 interface IConfig {
   port: number | string;
@@ -7,7 +8,7 @@ interface IConfig {
 
 const config: IConfig = {
   port: process.env.PORT || 3000,
-  prettyLog: process.env.NODE_ENV === "development"
+  prettyLog: process.env.NODE_ENV === "development",
 };
 
 export default config;

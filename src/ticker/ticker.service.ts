@@ -3,7 +3,7 @@ import * as ccxt from "ccxt";
 import Exchanges from "../exchanges/storedExchanges";
 import appError from "../helpers/appError";
 
-const getTicker = async (id: string, symbol: string) => {
+const getTicker = async (id: string, symbol: string): Promise<ccxt.Ticker> => {
   const exchange: ccxt.Exchange = await Exchanges.getExchange(id);
 
   try {

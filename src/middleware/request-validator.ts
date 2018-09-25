@@ -1,8 +1,9 @@
 import * as Joi from "joi";
+import { Context } from "koa";
 
-const validateObject = (object = {}, label, schema, options = {}) => {
+const validateObject = (object = {}, label: string, schema): void => {
   if (schema) {
-    const { error } = Joi.validate(object, schema, options);
+    const { error } = Joi.validate(object, schema);
     if (error) {
       throw new Error(`Invalid ${label} - ${error.message}`);
     }
@@ -11,18 +12,9 @@ const validateObject = (object = {}, label, schema, options = {}) => {
 
 const validate = validationObj => (ctx, next) => {
   try {
-    validateObject(ctx.headers, "Headers", validationObj.headers, {
-      allowUnknown: true,
-    });
+    validateObject(ctx.headers, "Headers", validationObj.headers);
     validateObject(ctx.params, "URL Parameters", validationObj.params);
-    validateObject(ctx.query, "URL Query", validationObj.query, {
-      allowUnknown: true,
-    });
-    if (ctx.request.body) {
-      validateObject(ctx.request.body, "Request Body", validationObj.body, {
-        allowUnknown: true,
-      });
-    }
+    validateObject(ctx.query, "URL Query", validationObj.query);
 
     return next();
   } catch (err) {

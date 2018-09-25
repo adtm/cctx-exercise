@@ -14,23 +14,32 @@ class Exchanges {
     this.storedExchanges = {};
   }
 
-  public getExchange = async (id: string, creds = {}) => {
-    const foundExchange = this.storedExchanges[id];
+  public getExchange = async (
+    id: string,
+    creds = {},
+  ): Promise<ccxt.Exchange> => {
+    const foundExchange: ccxt.Exchange = this.storedExchanges[id];
 
     if (!foundExchange) {
       logger.info(`${id}: fetching market`);
-      const addedExchange = await this.addExchange(id, creds);
+      const addedExchange: ccxt.Exchange = await this.addExchange(id, creds);
       return addedExchange;
     }
     return foundExchange;
   };
 
-  public addExchange = async (id: string, creds = {}) => {
-    const isSupported = ccxt.exchanges.indexOf(id) > -1;
+  public addExchange = async (
+    id: string,
+    creds = {},
+  ): Promise<ccxt.Exchange> => {
+    const isSupported: boolean = ccxt.exchanges.indexOf(id) > -1;
 
     if (isSupported) {
       try {
-        const exchange = new ccxt[id]({ enableRateLimit: true, ...creds });
+        const exchange: ccxt.Exchange = new ccxt[id]({
+          enableRateLimit: true,
+          ...creds,
+        });
         this.storedExchanges[id] = exchange;
         await exchange.loadMarkets();
         return exchange;
@@ -42,9 +51,9 @@ class Exchanges {
     }
   };
 
-  public updateExchanges = () => {
+  public updateExchanges = (): void => {
     setInterval(() => {
-      Object.keys(this.storedExchanges).forEach(id => {
+      Object.keys(this.storedExchanges).forEach((id: string) => {
         try {
           this.storedExchanges[id].loadMarkets();
         } catch (err) {
@@ -54,7 +63,7 @@ class Exchanges {
     }, SECOND);
   };
 
-  public initialExchangeLoad = async () => {
+  public initialExchangeLoad = async (): Promise<boolean> => {
     try {
       await this.loadDefaultExchanges();
       return true;
@@ -63,7 +72,7 @@ class Exchanges {
     }
   };
 
-  private loadDefaultExchanges = async () => {
+  private loadDefaultExchanges = async (): Promise<void> => {
     await Promise.all(
       ccxt.exchanges.map(async (id: string) => {
         const storedCredentials: object = exchangesWithCredentials[id] || {};

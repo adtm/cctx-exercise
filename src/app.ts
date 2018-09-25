@@ -13,14 +13,14 @@ const app = new Koa();
   // Exchanges.updateExchanges();
 
   if (status) {
-    console.log("Karolis stahp");
+    console.log("cool");
+
     app.use(logger());
     app.use(errorHandler);
     app.use(router.routes());
     app.use(router.allowedMethods());
   } else {
-    console.log("yolo");
-    return 0;
+    // throw new Error("Couldn\t load exchanges");
   }
 })();
 export default app;

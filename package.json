@@ -4,19 +4,12 @@
   "description": "REST-API exercise with the CCTX library",
   "main": "dist/server.js",
   "scripts": {
-    "precommit": "lint-staged",
     "clean": "rm -rf ./dist",
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "nodemon": "nodemon",
     "start": "npm-run-all --parallel dev nodemon",
     "test": "jest"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "git add"
-    ]
   },
   "keywords": [
     "cctx"
@@ -25,13 +18,11 @@
   "license": "ISC",
   "devDependencies": {
     "dotenv": "^6.0.0",
-    "husky": "^1.0.0-rc.15",
     "jest": "^23.6.0",
     "koa-logger": "^3.2.0",
-    "lint-staged": "^7.3.0",
     "nodemon": "^1.18.4",
     "npm-run-all": "^4.1.3",
-    "prettier": "^1.14.3",
+    "tslint": "^5.11.0",
     "ts-jest": "^22.0.2",
     "ts-loader": "^5.1.1",
     "ts-node": "^7.0.1",
@@ -50,7 +41,6 @@
     "joi": "^13.6.0",
     "koa": "^2.5.3",
     "koa-router": "^7.4.0",
-    "tslint": "^5.11.0",
     "winston": "^3.1.0"
   }
 }

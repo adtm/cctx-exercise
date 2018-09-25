@@ -9,7 +9,7 @@ function generateKey(): Buffer {
   return key;
 }
 
-function encrypt(encodeText): string {
+function encrypt(encodeText: string): string {
   const key: Buffer = generateKey();
   const iv: Buffer = crypto.randomBytes(parseInt(process.env.IV_COUNT, 10));
 
@@ -25,7 +25,7 @@ function encrypt(encodeText): string {
   return `${iv.toString("hex")}:${encryptedText.toString("hex")}`;
 }
 
-function decrypt(decodeText): string {
+function decrypt(decodeText: string): string {
   const key: Buffer = generateKey();
 
   const splitText: string[] = decodeText.split(":");
@@ -45,7 +45,7 @@ function decrypt(decodeText): string {
 }
 
 function decryptQueryParams(credentials): Array<{ [x: string]: string }> {
-  return Object.entries(credentials).map(([key, value]) => ({
+  return Object.entries(credentials).map(([key, value]: [string, string]) => ({
     [key]: decrypt(value),
   }));
 }

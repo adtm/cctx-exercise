@@ -4,7 +4,7 @@ import * as ccxt from "ccxt";
 import Exchanges from "../exchanges/storedExchanges";
 import appError from "../helpers/appError";
 
-const getBalance = async (id: string, creds) => {
+const getBalance = async (id: string, creds): Promise<ccxt.Balances> => {
   const exchange: ccxt.Exchange = await Exchanges.getExchange(id, creds);
 
   try {

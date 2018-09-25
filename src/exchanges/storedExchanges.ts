@@ -16,22 +16,32 @@ class Exchanges {
 
   public getExchange = async (
     id: string,
-    creds = {},
+    creds = null,
   ): Promise<ccxt.Exchange> => {
     const foundExchange: ccxt.Exchange = this.storedExchanges[id];
 
-    if (!foundExchange) {
+    console.log(id);
+    // console.log(foundExchange.loadedWithCredential);
+    console.log(creds);
+
+    if (!foundExchange || !foundExchange.loadedWithCredentials || creds) {
       logger.info(`${id}: fetching market`);
       const addedExchange: ccxt.Exchange = await this.addExchange(id, creds);
       return addedExchange;
     }
+
+    console.log("has stored creds");
     return foundExchange;
   };
 
   public addExchange = async (
     id: string,
-    creds = {},
+    creds = null,
   ): Promise<ccxt.Exchange> => {
+    console.log("---");
+
+    console.log(id);
+
     const isSupported: boolean = ccxt.exchanges.indexOf(id) > -1;
 
     if (isSupported) {
@@ -40,10 +50,17 @@ class Exchanges {
           enableRateLimit: true,
           ...creds,
         });
-        this.storedExchanges[id] = exchange;
+
+        // this.storedExchanges[id] = exchange;
         await exchange.loadMarkets();
+        console.log("here");
+        // if (creds) {
+        //   this.storedExchanges[id].loadedWithCredentials = true;
+        // }
+
         return exchange;
       } catch (err) {
+        console.log(err);
         throw new appError(404, `${id}: - ${err.message}`);
       }
     } else {
@@ -81,6 +98,10 @@ class Exchanges {
         try {
           await exchange.loadMarkets();
           this.storedExchanges[id] = exchange;
+
+          if (exchangesWithCredentials[id]) {
+            this.storedExchanges[id].loadedWithCredentials = true;
+          }
         } catch (err) {
           logger.error(`${id} - ${err.message}`);
         }

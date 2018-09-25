@@ -6,6 +6,8 @@ const validations = {
       id: Joi.string().required(),
       apiKey: Joi.string().required(),
       secret: Joi.string().required(),
+      uid: Joi.string(),
+      password: Joi.string(),
     },
   },
 };

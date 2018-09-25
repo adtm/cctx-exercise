@@ -9,7 +9,7 @@ interface IdCredentialParams {
 }
 
 const getBalance = async (ctx: Context) => {
-  const { id, credentials }: IdCredentialParams = ctx.query;
+  const { id, ...credentials }: IdCredentialParams = ctx.query;
   ctx.body = await balanceService.getBalance(id, credentials);
 };
 

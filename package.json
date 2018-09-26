@@ -6,10 +6,10 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "start": "node dist/server.js",
-    "build:dev": "webpack --mode production",
+    "build:dev": "webpack --mode development",
     "build:prod": "webpack --mode production",
-    "dev:start": "build:dev && yarn start",
-    "prod:start": "build:prod && yarn start",
+    "dev:start": "yarn build:dev && yarn start",
+    "prod:start": "yarn build:prod && yarn start",
     "test": "jest",
     "test:watch": "jest --watch"
   },

@@ -5,8 +5,6 @@ import appError from "../helpers/appError";
 import logger from "../helpers/logger";
 import exchangesWithCredentials from "./exchangesWithCredentials";
 
-const SECOND = 1000;
-
 class Exchanges {
   protected storedExchanges: any;
 
@@ -54,7 +52,7 @@ class Exchanges {
     }
   };
 
-  public updateExchanges = (): void => {
+  public updateExchanges = (TIME_PERIOD: number): void => {
     setInterval(() => {
       Object.keys(this.storedExchanges).forEach((id: string) => {
         try {
@@ -63,19 +61,20 @@ class Exchanges {
           logger.error(`${id}: - ${err.message}`);
         }
       });
-    }, SECOND);
+    }, TIME_PERIOD);
   };
 
   public initialExchangeLoad = async (): Promise<boolean> => {
     try {
-      await this.loadDefaultExchanges();
-      return true;
+      const response: boolean = await this.loadDefaultExchanges();
+      return response;
     } catch (err) {
+      logger.error(`${err.message}`);
       return false;
     }
   };
 
-  private loadDefaultExchanges = async (): Promise<void> => {
+  private loadDefaultExchanges = async (): Promise<boolean> => {
     await Promise.all(
       ccxt.exchanges.map(async (id: string) => {
         const storedCredentials: object = exchangesWithCredentials[id] || {};
@@ -89,6 +88,7 @@ class Exchanges {
         }
       }),
     );
+    return true;
   };
 }
 

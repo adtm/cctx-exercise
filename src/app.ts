@@ -1,26 +1,29 @@
 import * as Koa from "koa";
-import * as logger from "koa-logger";
+import * as koaLogger from "koa-logger";
 
 import errorHandler from "./middleware/error-handler";
 import router from "./router";
 
 import Exchanges from "./exchanges/storedExchanges";
+import logger from "./helpers/logger";
 
+const SECOND = 1000;
 const app = new Koa();
 
 (async () => {
-  const status = await Exchanges.initialExchangeLoad();
-  // Exchanges.updateExchanges();
+  const loadStatus = await Exchanges.initialExchangeLoad();
 
-  if (status) {
-    console.log("cool");
+  if (loadStatus) {
+    logger.info("Loaded succesfully!");
+    Exchanges.updateExchanges(SECOND);
 
-    app.use(logger());
+    app.use(koaLogger());
     app.use(errorHandler);
     app.use(router.routes());
     app.use(router.allowedMethods());
   } else {
-    // throw new Error("Couldn\t load exchanges");
+    logger.error("Couldn't load initial exchanges");
   }
 })();
+
 export default app;

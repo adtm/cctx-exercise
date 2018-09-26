@@ -30,12 +30,9 @@ const placeOrder = async ({
       side,
       amount,
       price,
-      { id },
     );
-    console.log("yoyo");
     return placedOrder;
   } catch (err) {
-    console.log(err);
     throw new appError(404, `${id}: - ${err.message}`);
   }
 };

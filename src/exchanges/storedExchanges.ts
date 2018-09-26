@@ -14,11 +14,11 @@ class Exchanges {
 
   public getExchange = async (
     id: string,
-    creds = {},
+    creds = null,
   ): Promise<ccxt.Exchange> => {
     const foundExchange: ccxt.Exchange = this.storedExchanges[id];
 
-    if (!foundExchange || !foundExchange.apiKey) {
+    if (!foundExchange || (!foundExchange.apiKey && creds)) {
       logger.info(`${id}: fetching market`);
       const addedExchange: ccxt.Exchange = await this.addExchange(id, creds);
       return addedExchange;

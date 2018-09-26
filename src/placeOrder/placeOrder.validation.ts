@@ -12,8 +12,8 @@ const validations = {
       amount: Joi.number().required(),
       price: Joi.number().required(),
 
-      apiKey: Joi.string(),
-      secret: Joi.string(),
+      apiKey: Joi.string().required(),
+      secret: Joi.string().required(),
     },
   },
 };

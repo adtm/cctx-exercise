@@ -4,8 +4,8 @@ const validations = {
   getBalance: {
     query: {
       id: Joi.string().required(),
-      apiKey: Joi.string(),
-      secret: Joi.string(),
+      apiKey: Joi.string().required(),
+      secret: Joi.string().required(),
       uid: Joi.string(),
       password: Joi.string(),
     },

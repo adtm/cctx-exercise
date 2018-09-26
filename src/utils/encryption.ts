@@ -44,10 +44,27 @@ function decrypt(decodeText: string): string {
   return decryptedText.toString();
 }
 
-function decryptQueryParams(credentials): Array<{ [x: string]: string }> {
-  return Object.entries(credentials).map(([key, value]: [string, string]) => ({
-    [key]: decrypt(value),
-  }));
+function decryptQueryParams(credentials): { [x: string]: string } {
+  const decrypted = {};
+  Object.entries(credentials).map(([key, value]: [string, string]) => {
+    decrypted[key] = decrypt(value);
+  });
+  return decrypted;
 }
 
-export { encrypt, decrypt, decryptQueryParams, generateKey };
+// WARN: for testing purposes
+function encryptQueryParams(credentials): { [x: string]: string } {
+  const encrypted = {};
+  Object.entries(credentials).map(([key, value]: [string, string]) => {
+    encrypted[key] = encrypt(value);
+  });
+  return encrypted;
+}
+
+export {
+  encrypt,
+  decrypt,
+  decryptQueryParams,
+  encryptQueryParams,
+  generateKey,
+};

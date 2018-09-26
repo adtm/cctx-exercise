@@ -14,13 +14,14 @@ const app = new Koa();
   const loadStatus = await Exchanges.initialExchangeLoad();
 
   if (loadStatus) {
-    logger.info("Loaded succesfully!");
+    logger.info("Markets loaded succesfully!");
     Exchanges.updateExchanges(SECOND);
 
     app.use(koaLogger());
     app.use(errorHandler);
     app.use(router.routes());
     app.use(router.allowedMethods());
+    logger.info("Erorr handling & routes configured!");
   } else {
     logger.error("Couldn't load initial exchanges");
   }

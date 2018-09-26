@@ -5,6 +5,7 @@ import config from "./config";
 import logger from "./helpers/logger";
 
 if (cluster.isMaster) {
+  logger.info(`Master ${process.pid} is up!`);
   const cpuCount = require("os").cpus().length;
 
   for (let i = 0; i < cpuCount; ++i) {
@@ -13,7 +14,7 @@ if (cluster.isMaster) {
 
   cluster.on("exit", (worker: cluster.Worker, code: number) => {
     logger.error(`Worker ${worker.id} died with ${code}`);
-    cluster.fork();
+    // cluster.fork();
   });
 } else {
   app.listen(config, () => logger.info(`..worker ${process.pid} is up`));

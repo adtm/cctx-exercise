@@ -50,4 +50,4 @@ function decryptQueryParams(credentials): Array<{ [x: string]: string }> {
   }));
 }
 
-export { encrypt, decrypt, decryptQueryParams };
+export { encrypt, decrypt, decryptQueryParams, generateKey };

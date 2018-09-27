@@ -20,6 +20,7 @@ class Exchanges {
 
     if (!foundExchange || (!foundExchange.apiKey && creds)) {
       logger.info(`${id}: fetching market`);
+
       const addedExchange: ccxt.Exchange = await this.addExchange(id, creds);
       return addedExchange;
     }
@@ -77,9 +78,7 @@ class Exchanges {
   private loadDefaultExchanges = async (): Promise<boolean> => {
     await Promise.all(
       ccxt.exchanges.map(async (id: string) => {
-        const storedCredentials: object = exchangesWithCredentials[id] || {};
-        const exchange: ccxt.Exchange = new ccxt[id](storedCredentials);
-
+        const exchange: ccxt.Exchange = new ccxt[id]();
         try {
           await exchange.loadMarkets();
           this.storedExchanges[id] = exchange;

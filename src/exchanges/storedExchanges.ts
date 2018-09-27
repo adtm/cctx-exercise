@@ -6,7 +6,7 @@ import logger from "../helpers/logger";
 import exchangesWithCredentials from "./exchangesWithCredentials";
 
 class Exchanges {
-  protected storedExchanges: any;
+  protected storedExchanges: { [id: string]: ccxt.Exchange };
 
   constructor() {
     this.storedExchanges = {};

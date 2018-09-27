@@ -6,6 +6,7 @@
 - Koa
 - Winston
 - Joi
+- Jest
 
 ### What's done:
 
@@ -16,11 +17,19 @@
 - Cluster API
 - Logging by cluster.pid by error / info
 
-## What can be improved:
+## To run
 
-- The main thing I would improved is shared data between clusters and how it's handled.
-  For example, now, if a apiKey, secret is passed, the ccxt.exchange will be initialized once again
-  with the keys. I would like this data to be shared between clusters, thus if one exchange has been initialized
-  with API keys, all cluster those exchanges would be also initialized.
+> Install modules:
+> `yarn`
 
-- API hashked key storing in mongoose
+### Instance
+
+```shell
+yarn prod:start
+```
+
+### Tests
+
+```shell
+yarn test
+```

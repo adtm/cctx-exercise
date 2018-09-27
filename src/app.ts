@@ -21,6 +21,7 @@ const app = new Koa();
     app.use(errorHandler);
     app.use(router.routes());
     app.use(router.allowedMethods());
+
     logger.info("Erorr handling & routes configured!");
   } else {
     logger.error("Couldn't load initial exchanges");

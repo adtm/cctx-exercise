@@ -1,5 +1,4 @@
 import * as Joi from "joi";
-import { Context } from "koa";
 
 const validateObject = (object = {}, label: string, schema): void => {
   if (schema) {

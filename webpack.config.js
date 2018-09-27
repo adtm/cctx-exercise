@@ -18,7 +18,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx"],
+    extensions: [".ts"],
   },
   output: {
     filename: "server.js",

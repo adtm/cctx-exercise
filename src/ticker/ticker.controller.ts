@@ -1,7 +1,6 @@
 import { Context } from "koa";
 
 import * as tickerService from "./ticker.service";
-import logger from "../helpers/logger";
 
 interface IdSymbolParam {
   id: string;

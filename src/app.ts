@@ -7,7 +7,6 @@ import router from "./router";
 import Exchanges from "./exchanges/storedExchanges";
 import logger from "./helpers/logger";
 
-const SECOND = 1000;
 const app = new Koa();
 
 (async () => {
@@ -15,7 +14,7 @@ const app = new Koa();
 
   if (loadStatus) {
     logger.info("Markets loaded succesfully!");
-    Exchanges.updateExchanges(SECOND);
+    Exchanges.updateExchanges(process.env.MARKET_LOAD_PERIOD);
 
     app.use(koaLogger());
     app.use(errorHandler);

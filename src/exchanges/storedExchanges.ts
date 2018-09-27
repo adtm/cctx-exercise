@@ -52,7 +52,7 @@ class Exchanges {
     }
   };
 
-  public updateExchanges = (TIME_PERIOD: number): void => {
+  public updateExchanges = (TIME_PERIOD: string): void => {
     setInterval(() => {
       Object.keys(this.storedExchanges).forEach((id: string) => {
         try {
@@ -61,7 +61,7 @@ class Exchanges {
           logger.error(`${id}: - ${err.message}`);
         }
       });
-    }, TIME_PERIOD);
+    }, parseInt(TIME_PERIOD, 10));
   };
 
   public initialExchangeLoad = async (): Promise<boolean> => {

@@ -22,12 +22,13 @@ const placeOrder = async ({
   price,
   ...creds
 }: IOrderParams): Promise<any> => {
-  // const encryptedCreds = encryptQueryParams(creds);
-  // const decryptCreds = decryptQueryParams(encryptedCreds); // WARN: for decryption testing
-
-  const exchange: ccxt.Exchange = await Exchanges.getExchange(id, creds);
-
   try {
+    const decryptCreds = decryptQueryParams(creds);
+    const exchange: ccxt.Exchange = await Exchanges.getExchange(
+      id,
+      decryptCreds,
+    );
+
     const placedOrder = await exchange.createOrder(
       symbol,
       orderType,

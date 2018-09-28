@@ -8,7 +8,7 @@ import * as symbolController from "./symbol.controller";
 const router = new Router();
 
 router.get(
-  "/symbol",
+  "/symbols",
   validate(symbolValidation.getSymbol),
   symbolController.getTicker,
 );
